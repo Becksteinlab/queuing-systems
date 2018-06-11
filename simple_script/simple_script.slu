@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# request 1 node
+#SBATCH -N 1
+
+# 1 core per node
+#SBATCH -n 1
+
+# select the partition
+#SBATCH -p physicsgpu1
+
+# select the queue
+#SBATCH -q wildfire
+
+# name of output files
+#SBATCH -o stdout_log.%j.o
+#SBATCH -e stderr_log.%j.e
+
+# Job name
+#SBATCH -J simple_script
+
+echo "This output will be put out to the log file, which can be very useful for debugging purposes."
+echo "When a slurm job is run, there are a few environment variables available to use:"
+echo "Job ID: ${SLURM_JOB_ID}"
+echo "Job Name: ${SLURM_JOB_NAME}"
+echo "Submission Directory: ${SLURM_SUBMIT_DIR}"
+echo "Number of nodes: ${SLURM_JOB_NUM_NODES}"
+echo "Cores per node: ${SLURM_CPUS_ON_NODE}"
+echo "Total cores: ${SLURM_NTASKS}"
+
+OUTPUT_DIR=${SLURM_SUBMIT_DIR}/output
+
+echo $RANDOM >> /scratch/${USER}/output.txt
+1>&2 echo "User reported error" 
+
+cp /scratch/${USER}/output.txt $OUTPUT_DIR/
+rm /scratch/${USER}/output.txt # clean up scratch space 

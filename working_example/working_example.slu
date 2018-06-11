@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#SBATCH -N 2
+#SBATCH -n 48
+#SBATCH -p physicsgpu1
+#SBATCH -q wildfire
+#SBATCH -o stdout_log.%j.o
+#SBATCH -e stderr_log.%j.e
+#SBATCH -J benzene_in_water
+#SBATCH -t 0-01:00                  # wall time (D-HH:MM)
+
+GMX_VERSION=4.6.7
+DEFFNM="md"
+TPR="4.6.7.tpr"
+WORK=/scratch/${USER}/WORK/${SLURM_JOB_ID}
+
+mkdir -p $WORK
+test -d $WORK || { echo "Could not make directory: ${WORK}"; exit 2; }
+
+cp $TPR $WORK
+cd $WORK || { echo "Could not change directory to: ${WORK}"; exit 2; }
+
+module purge
+module load gromacs/${GMX_VERSION}
+module load cuda/8.0.61
+
+mpirun -np $SLURM_NTASKS mdrun_mpi -s $TPR -nsteps 10000
+
+cp * $SLURM_SUBMIT_DIR

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH -p physicsgpu1
+#SBATCH -q wildfire
+#SBATCH -o stdout_log.%j.o
+#SBATCH -e stderr_log.%j.e
+#SBATCH -J module_script
+
+# the cluster provides software and library files for users
+# the modules can be viewed by invoking `module avail <string>` 
+
+
+echo "Load python 3.5.1"
+module purge 
+module load python/3.5.1
+python --version
+
+echo "Load python 3.5.2"
+module purge
+module load python/3.5.2
+python --version
