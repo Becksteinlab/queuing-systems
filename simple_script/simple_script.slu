@@ -33,5 +33,7 @@ OUTPUT_DIR=${SLURM_SUBMIT_DIR}/output
 echo $RANDOM >> /scratch/${USER}/output.txt
 1>&2 echo "User reported error" 
 
+mkdir -p $OUTPUT_DIR
+
 cp /scratch/${USER}/output.txt $OUTPUT_DIR/
 rm /scratch/${USER}/output.txt # clean up scratch space 
